@@ -35,12 +35,34 @@ char* const getMoisture() {
   }
 }
 
+const bool OPEN_GATE = false;
+const int GATE_PIN = 2;
+
+void initGate() {
+  pinMode(GATE_PIN, OUTPUT);
+}
+
+void openGate() {
+  digitalWrite(GATE_PIN, HIGH);
+}
+
+void closeGate() {
+  digitalWrite(GATE_PIN, LOW);
+}
+
 void setup(){
+  initGate();
   Serial.begin(9600);
 }
 
 void loop() {
   char* const humidity = getMoisture();
+
+  if (humidity == "DRY" || humidity == "MILD") {
+    openGate();
+  } else if (humidity == "WET") {
+    closeGate();
+  }
 
   Serial.println(humidity);
 
