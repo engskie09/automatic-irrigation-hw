@@ -1,3 +1,5 @@
+#include <Servo.h>
+
 const int moistureSensorPin = A0;
 float moistureValue;
 float moisturePercentage;
@@ -37,9 +39,12 @@ char* const getMoisture() {
 
 const bool OPEN_GATE = false;
 const int GATE_PIN = 2;
+Servo gateServo;
+int pos = 0;
 
 void initGate() {
   pinMode(GATE_PIN, OUTPUT);
+  gateServo.attach(9, 500, 2500);
 }
 
 void openGate() {
@@ -64,7 +69,9 @@ void loop() {
     closeGate();
   }
 
-  Serial.println(humidity);
+  delay(500);
 
-  delay(1000);
+  for (pos = 0; pos <= 360; pos += 1) {
+    gateServo.write(pos);
+  }
 }
